@@ -5,9 +5,7 @@ library(ElemStatLearn)
 data(prostate)
 
 training_set <- prostate[prostate$train, -10]
-test_set <- prostate[prostate$train == FALSE, -10]
 training_set[,-9] <- scale(training_set[,-9])
-test_set[,-9] <- scale(test_set[,-9])
 
 nrow <- dim(training_set)[1]
 p <- dim(training_set)[2] - 1

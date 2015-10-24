@@ -5,9 +5,21 @@ library(ElemStatLearn)
 data(prostate)
 
 training_set <- prostate[prostate$train, -10]
+lpsa <- prostate[prostate$train, 9]
+training_set$lpsa <- NULL
+training_set <- scale(training_set)
+means <- attr(training_set, "scaled:center")
+stds <- attr(training_set, "scaled:scale")
+training_set <- data.frame(training_set)
+training_set$lpsa <- lpsa
+
 test_set <- prostate[prostate$train == FALSE, -10]
-training_set[,-9] <- scale(training_set[,-9])
-test_set[,-9] <- scale(test_set[,-9])
+lpsaTest <- prostate[prostate$train == FALSE, 9]
+test_set$lpsa <- NULL
+test_set <- t(apply(test_set, 1, '-', means))
+test_set <- t(apply(test_set, 1, '/', stds))
+test_set <- data.frame(test_set)
+test_set$lpsa <- lpsaTest
 
 ### Table 3.1
 D <- training_set[,-9]

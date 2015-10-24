@@ -1,4 +1,4 @@
-### Figure 3.5 Re-implementation
+# Figure 3.5 Re-implementation
 
 ### Load and Preprocess the data
 library(ElemStatLearn)
@@ -37,12 +37,14 @@ for(k in 1:p) {
 }
 
 #### plot figure 3.5
-plot(xPlot,yPlot,xlab="Subset Size k",ylab="Residual Sum-of-Squares",ylim=c(0,100),xlim=c(0,8))
+plotDf1 <- data.frame(cbind(xPlot, yPlot))
+plotDf2 <- data.frame(cbind(xMinPlot, yMinPlot))
 
-xMinPlot = xPlot[1]; yMinPlot = yPlot[1]
-for ( ki in 1:p ){
-  inds = xPlot==ki
-  rmin = min(yPlot[inds])
-  xMinPlot = c(xMinPlot,ki); yMinPlot = c(yMinPlot,rmin)
-}
-lines(xMinPlot,yMinPlot)
+library(ggplot2)
+ggplot(data=plotDf1, aes(x=xPlot, y=yPlot)) + geom_point() + 
+  labs(title="Figure 3.5: All possible subset models for the prostate cancer example",
+       x="Subset Size k", y="Residual Sum-of-Squares") +
+  theme_bw() + xlim(0,8) + ylim(0,100) + 
+  geom_line(data=plotDf2, aes(x=xMinPlot, y=yMinPlot, color="red")) +
+  geom_point(data=plotDf2, aes(x=xMinPlot, y=yMinPlot, color="red", size=2)) +
+  scale_color_discrete(guide=FALSE) + scale_size(guide=FALSE)
